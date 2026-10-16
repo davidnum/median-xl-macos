@@ -82,7 +82,7 @@ halfway, the game does not start (to avoid a mixed version); start it again to r
 | `fsr\...` shader presets don't work | They need GLSL 4.20 (`packHalf2x16`); macOS OpenGL stops at 4.1 | Use any other preset. Presets with fewer passes are faster |
 | Changing a shader in the menu does nothing | The dropdown only selects; the preset is compiled when you press **Apply** | Press **Apply** next to the dropdown (D2GL menu: `Ctrl+O`) |
 | The game opens in a small window after you plug in / unplug a monitor | Wine keeps the old display layout while the bottle is running | Quit the game and start it again; the launcher restarts the bottle before each start |
-| The macOS cursor shows up over the game at the screen edges | The cursor can leave the game window and hit the Dock / menu bar | Try turning off **Unlock Cursor** in the D2GL menu (`Ctrl+O`), or set `unlock_cursor=false` in `d2gl.ini`, so the cursor stays inside the game window |
+| The macOS arrow cursor appears over the game | Wine shows the system cursor whenever the mouse is over anything that is not a game window (menu bar, Dock, a notification); D2GL also releases the mouse on focus loss, `Ctrl+Tab` and in its `Ctrl+O` menu | Nothing for the first part — the bottle captures the display in fullscreen, so nothing else is drawn over the game. If D2GL released the mouse, click in the game once |
 | Lower FPS with heavy shaders | Shaders run through Apple's OpenGL → Metal layer | Pick a lighter preset or turn off V-Sync in the D2GL menu |
 
 Keyboard: `Alt+Enter` toggles fullscreen (D2GL-MXL starts windowed by default), `Ctrl+O` opens the D2GL
@@ -105,6 +105,7 @@ The fixes, for anyone who wants to reproduce or improve them:
   error* and a stack overflow. The bottle is Windows 10, with a per-application override
   (`HKCU\Software\Wine\AppDefaults\Game.exe\Version = win7`).
 - **MSync** is enabled in the bottle for lower synchronisation overhead.
+- **Display capture for fullscreen.** `HKCU\Software\Wine\AppDefaults\Game.exe\Mac Driver\CaptureDisplaysForFullscreen = y`: while the game is fullscreen, Wine captures the display, so the menu bar, Dock and notifications can't appear over it and the hidden cursor stays hidden. Notifications and the Dock are not shown while you play fullscreen.
 - **Launcher** (`launcher.sh`): restarts the bottle's wineserver before each start, runs the updater,
   restores the shader preset, starts `Game.exe -3dfx -skiptobnet` and retries up to six times when the
   known D2GL startup crash (`Fault address: 00000000` in `logs/D2Debug-*.txt`) appears in the first

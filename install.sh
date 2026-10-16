@@ -67,6 +67,7 @@ EOF
 reg() { WINEDEBUG=-all "$CX/wine" --bottle "$BOTTLE" reg add "$@" /f >/dev/null 2>&1 </dev/null; }
 step "Configuring the bottle"
 reg 'HKCU\Software\Wine\AppDefaults\Game.exe' /v Version /t REG_SZ /d win7
+reg 'HKCU\Software\Wine\AppDefaults\Game.exe\Mac Driver' /v CaptureDisplaysForFullscreen /t REG_SZ /d y
 D2KEY='HKCU\Software\Blizzard Entertainment\Diablo II'
 reg "$D2KEY" /v InstallPath /t REG_SZ /d 'C:\Games\median-xl\'
 reg "$D2KEY" /v NewSavePath /t REG_SZ /d 'C:\users\crossover\Saved Games\Diablo II\\'
